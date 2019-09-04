@@ -10,6 +10,10 @@
 #ifndef COMMON_MACROS_H_
 #define COMMON_MACROS_H_
 
+#define NULL_PTR    ((void*)0u)
+
+#define I 7u
+
 #define LOW  0u
 #define HIGH 1u
 

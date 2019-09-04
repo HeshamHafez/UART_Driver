@@ -9,8 +9,7 @@
 
 int main(void)
 {
-	UART_cfg UART_Config = {9600,UART_DoubleSpeedEn,UART_TxIntDisabled,UART_RxIntDisabled,UART_UdrDisabled,Bit8,UART_ParityDisabled,UART_StopBit1};
-	UART_Init(&UART_Config);
+	UART_Init();
 	while(1)
 	{
 

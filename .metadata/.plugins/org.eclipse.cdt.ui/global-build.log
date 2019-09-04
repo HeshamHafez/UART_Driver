@@ -1,4 +1,4 @@
-22:01:51 **** Incremental Build of configuration Debug for project uart_transmiter ****
+22:04:01 **** Incremental Build of configuration Debug for project uart_transmiter ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
@@ -39,10 +39,10 @@ AVR Memory Usage
 ----------------
 Device: atmega32
 
-Program:    2322 bytes (7.1% Full)
+Program:    2808 bytes (8.6% Full)
 (.text + .data + .bootloader)
 
-Data:         18 bytes (0.9% Full)
+Data:         11 bytes (0.5% Full)
 (.data + .bss + .noinit)
 
 

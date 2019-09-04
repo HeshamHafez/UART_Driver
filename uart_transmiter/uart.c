@@ -1,24 +1,65 @@
-/*
- * uart.c
+/******************************************************************************
  *
- *  Created on: Sep 2, 2019
- *      Author: hesha
- */
+ * Module: UART
+ *
+ * File Name: uart.c
+ *
+ * Description: Source file for the UART AVR driver
+ *
+ * Created on: Sep 3, 2019
+ *
+ * Author: Hesham Hafez
+ *
+ *******************************************************************************/
 
-#include"uart.h"
 
-Status UART_Init(UART_cfg* a_UartCfg_ptr)
+/*******************************************************************************
+ *                       	Included Libraries                                 *
+ *******************************************************************************/
+#include "uart.h"
+
+/*******************************************************************************
+ *                           Global Variables                                  *
+ *******************************************************************************/
+static volatile uint8 g_flag = 0u;
+
+/*******************************************************************************
+ *                       Interrupt Service Routines                            *
+ *******************************************************************************/
+
+ISR(USART_TXC_vect)
 {
-	uint16 UBRR = 0u;
-	if(a_UartCfg_ptr -> DoubleSpeed == UART_DoubleSpeedDisable)
+	UART_UDR = g_flag;
+
+}
+/*******************************************************************************
+ *                      Functions Definitions                                  *
+ *******************************************************************************/
+
+/*******************************************************************************
+ * Function Name:	UART_Init
+ *
+ * Description: 	*Initialize the UART Driver Registers
+ * 					*Set the driver Configurations
+ *
+ * Inputs:			Configuration Structure
+ *
+ * Outputs:			NULL
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+Status UART_Init(void)
+{
+	uint16 UART_UBRR = 0u;
+	if(UART_Config.DoubleSpeed == UART_DoubleSpeedDisable)
 	{
-		CLEAR_BIT(UCSRA,U2X);
-		UBRR = (((F_CPU / (a_UartCfg_ptr->baud_rate * 16UL))) - 1);
+		CLEAR_BIT(UART_UCSRA,UART_U2X);
+		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 16UL))) - 1);
 	}
-	else if(a_UartCfg_ptr->DoubleSpeed == UART_DoubleSpeedEn)
+	else if(UART_Config.DoubleSpeed == UART_DoubleSpeedEn)
 	{
-		SET_BIT(UCSRA,U2X);
-		UBRR = (((F_CPU / (a_UartCfg_ptr->baud_rate * 8UL))) - 1);
+		SET_BIT(UART_UCSRA,UART_U2X);
+		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 8UL))) - 1);
 	}
 	else
 	{
@@ -26,80 +67,80 @@ Status UART_Init(UART_cfg* a_UartCfg_ptr)
 	}
 
 	/*clear to choose UBRRH*/
-	CLEAR_BIT(UCSRC,URSEL);
-	UBRRL = (uint8)UBRR;
-	UBRRH = (uint8)(UBRR >> 8);
-	SET_BIT(UCSRC,URSEL);
+	CLEAR_BIT(UART_UCSRC,UART_URSEL);
+	UART_UBRRL = (uint8)UART_UBRR;
+	UART_UBRRH = (uint8)(UART_UBRR >> 8);
+	SET_BIT(UART_UCSRC,UART_URSEL);
 	/*set to choose UCSRC*/
 	/*************************************************************************************/
-	if(a_UartCfg_ptr -> TxInt  == UART_TxIntDisabled)
+	if(UART_Config.TxInt  == UART_TxIntDisabled)
 	{
-		CLEAR_BIT(UCSRB,TXCIE);
+		CLEAR_BIT(UART_UCSRB,UART_TXCIE);
 	}
-	else if(a_UartCfg_ptr -> TxInt  == UART_TxIntEn)
+	else if(UART_Config.TxInt  == UART_TxIntEn)
 	{
-		SET_BIT(UCSRB,TXCIE);
+		SET_BIT(UART_UCSRB,UART_TXCIE);
 	}
 	else
 	{
 		return NotOk;
 	}
 	/*************************************************************************************/
-	if(a_UartCfg_ptr -> RxInt  == UART_RxIntDisabled)
+	if(UART_Config.RxInt  == UART_RxIntDisabled)
 	{
-		CLEAR_BIT(UCSRB,RXCIE);
+		CLEAR_BIT(UART_UCSRB,UART_RXCIE);
 	}
-	else if(a_UartCfg_ptr -> RxInt  == UART_RxIntEn)
+	else if(UART_Config.RxInt  == UART_RxIntEn)
 	{
-		SET_BIT(UCSRB,RXCIE);
+		SET_BIT(UART_UCSRB,UART_RXCIE);
 	}
 	else
 	{
 		return NotOk;
 	}
 	/***************************************************************************************/
-	if(a_UartCfg_ptr -> Udr == UART_UdrDisabled)
+	if(UART_Config.Udr == UART_UdrDisabled)
 	{
-		CLEAR_BIT(UCSRB,UDRIE);
+		CLEAR_BIT(UART_UCSRB,UART_UDRIE);
 	}
-	else if(a_UartCfg_ptr -> Udr  == UART_UdrEn)
+	else if(UART_Config.Udr  == UART_UdrEn)
 	{
-		SET_BIT(UCSRB,UDRIE);
+		SET_BIT(UART_UCSRB,UART_UDRIE);
 	}
 	else
 	{
 		return NotOk;
 	}
 	/********************************************************************************************/
-	if(a_UartCfg_ptr -> DataSize == Bit5)
+	if(UART_Config.DataSize == Bit5)
 	{
-		CLEAR_BIT(UCSRB,UCSZ2);
-		CLEAR_BIT(UCSRC,UCSZ1);
-		CLEAR_BIT(UCSRC,UCSZ0);
+		CLEAR_BIT(UART_UCSRB,UART_UCSZ2);
+		CLEAR_BIT(UART_UCSRC,UART_UCSZ1);
+		CLEAR_BIT(UART_UCSRC,UART_UCSZ0);
 	}
-	else if(a_UartCfg_ptr -> DataSize == Bit6)
+	else if(UART_Config.DataSize == Bit6)
 	{
-		CLEAR_BIT(UCSRB,UCSZ2);
-		CLEAR_BIT(UCSRC,UCSZ1);
-		SET_BIT(UCSRC,UCSZ0);
+		CLEAR_BIT(UART_UCSRB,UART_UCSZ2);
+		CLEAR_BIT(UART_UCSRC,UART_UCSZ1);
+		SET_BIT(UART_UCSRC,UART_UCSZ0);
 	}
-	else if(a_UartCfg_ptr -> DataSize == Bit7)
+	else if(UART_Config.DataSize == Bit7)
 	{
-		CLEAR_BIT(UCSRB,UCSZ2);
-		SET_BIT(UCSRC,UCSZ1);
-		CLEAR_BIT(UCSRC,UCSZ0);
+		CLEAR_BIT(UART_UCSRB,UART_UCSZ2);
+		SET_BIT(UART_UCSRC,UART_UCSZ1);
+		CLEAR_BIT(UART_UCSRC,UART_UCSZ0);
 	}
-	else if(a_UartCfg_ptr -> DataSize == Bit8)
+	else if(UART_Config.DataSize == Bit8)
 	{
-		CLEAR_BIT(UCSRB,UCSZ2);
-		SET_BIT(UCSRC,UCSZ1);
-		SET_BIT(UCSRC,UCSZ0);
+		CLEAR_BIT(UART_UCSRB,UART_UCSZ2);
+		SET_BIT(UART_UCSRC,UART_UCSZ1);
+		SET_BIT(UART_UCSRC,UART_UCSZ0);
 	}
-	else if(a_UartCfg_ptr -> DataSize == Bit9)
+	else if(UART_Config.DataSize == Bit9)
 	{
-		SET_BIT(UCSRB,UCSZ2);
-		SET_BIT(UCSRC,UCSZ1);
-		SET_BIT(UCSRC,UCSZ0);
+		SET_BIT(UART_UCSRB,UART_UCSZ2);
+		SET_BIT(UART_UCSRC,UART_UCSZ1);
+		SET_BIT(UART_UCSRC,UART_UCSZ0);
 	}
 	else
 	{
@@ -107,20 +148,20 @@ Status UART_Init(UART_cfg* a_UartCfg_ptr)
 	}
 
 	/*********************************************************************************/
-	if(a_UartCfg_ptr -> Parity == UART_ParityDisabled)
+	if(UART_Config.Parity == UART_ParityDisabled)
 	{
-		CLEAR_BIT(UCSRC,UPM0);
-		CLEAR_BIT(UCSRC,UPM1);
+		CLEAR_BIT(UART_UCSRC,UART_UPM0);
+		CLEAR_BIT(UART_UCSRC,UART_UPM1);
 	}
-	else if(a_UartCfg_ptr -> Parity == UART_ParityOdd)
+	else if(UART_Config.Parity == UART_ParityOdd)
 	{
-		SET_BIT(UCSRC,UPM0);
-		SET_BIT(UCSRC,UPM1);
+		SET_BIT(UART_UCSRC,UART_UPM0);
+		SET_BIT(UART_UCSRC,UART_UPM1);
 	}
-	else if(a_UartCfg_ptr -> Parity == UART_ParityEven)
+	else if(UART_Config.Parity == UART_ParityEven)
 	{
-		CLEAR_BIT(UCSRC,UPM0);
-		SET_BIT(UCSRC,UPM1);
+		CLEAR_BIT(UART_UCSRC,UART_UPM0);
+		SET_BIT(UART_UCSRC,UART_UPM1);
 	}
 	else
 	{
@@ -128,13 +169,163 @@ Status UART_Init(UART_cfg* a_UartCfg_ptr)
 	}
 
 	/*****************************************************************************/
-	if(a_UartCfg_ptr -> StopBits == UART_StopBit1)
+	if(UART_Config.StopBits == UART_StopBit1)
 	{
-		CLEAR_BIT(UCSRC,USBS);
+		CLEAR_BIT(UART_UCSRC,UART_USBS);
 	}
-	else if(a_UartCfg_ptr -> StopBits == UART_StopBit2)
+	else if(UART_Config.StopBits == UART_StopBit2)
 	{
-		SET_BIT(UCSRC,USBS);
+		SET_BIT(UART_UCSRC,UART_USBS);
 	}
 	return Ok;
 }
+
+/*******************************************************************************
+ * Function Name:	UART_SendChar
+ *
+ * Description: 	transmit a new byte
+ *
+ * Inputs:			Transmitting Byte
+ *
+ * Outputs:			NULL
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+Status UART_SendChar(const uint8 a_data)
+{
+
+	if(UART_Config.TxInt  == UART_TxIntDisabled)
+	{
+		/* UDRE flag is set when the Tx buffer (UDR) is empty and ready for
+		 * transmitting a new byte so wait until this flag is set to one */
+
+		while(IS_BIT_CLEAR(UART_UCSRA,UART_UDRE)){}
+
+		/* Put the required data in the UDR register and it also clear the UDRE flag as
+		 * the UDR register is not empty now */
+
+		UART_UDR = a_data;
+		return Ok;
+	}
+	else if(UART_Config.TxInt == UART_TxIntEn)
+	{
+		g_flag = a_data;
+	}
+	else
+	{
+		return NotOk;
+	}
+	return Ok;
+}
+
+/*******************************************************************************
+ * Function Name:	UART_Send
+ *
+ * Description: 	transmit a new String
+ *
+ * Inputs:			Transmitted String
+ *
+ * Outputs:			NULL
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+Status UART_Send(const uint8 * a_data_ptr)
+{
+	while(*a_data_ptr != '\0')
+	{
+		UART_SendChar(*a_data_ptr);
+		a_data_ptr++;
+	}
+	return Ok;
+}
+
+/*******************************************************************************
+ * Function Name:	UART_Start
+ *
+ * Description: 	Start transmitting or Receiving
+ *
+ * Inputs:			NULL
+ *
+ * Outputs:		NULL
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+Status UART_Start(void)
+{
+	SET_BIT(UART_UCSRB,UART_TXEN);
+	SET_BIT(UART_UCSRB,UART_RXEN);
+	SET_BIT(UART_UCSRB,UART_UDRIE);
+
+	if(UART_Config.TxInt  == UART_TxIntDisabled)
+	{
+		CLEAR_BIT(UART_UCSRB,UART_TXCIE);
+		CLEAR_BIT(SREG,7);
+	}
+	else if(UART_Config.TxInt  == UART_TxIntEn)
+	{
+		SET_BIT(UART_UCSRB,UART_TXCIE);
+		SET_BIT(SREG,7);
+	}
+	else
+	{
+		return NotOk;
+	}
+
+	if(UART_Config.Udr == UART_UdrDisabled)
+	{
+		CLEAR_BIT(UART_UCSRB,UART_UDRIE);
+		CLEAR_BIT(SREG,7);
+	}
+	else if(UART_Config.Udr  == UART_UdrEn)
+	{
+		SET_BIT(UART_UCSRB,UART_UDRIE);
+		SET_BIT(SREG,7);
+	}
+	else
+	{
+		return NotOk;
+	}
+
+	if(UART_Config.RxInt  == UART_RxIntDisabled)
+	{
+		CLEAR_BIT(UART_UCSRB,UART_RXCIE);
+		CLEAR_BIT(SREG,7);
+	}
+	else if(UART_Config.RxInt  == UART_RxIntEn)
+	{
+		SET_BIT(UART_UCSRB,UART_RXCIE);
+		SET_BIT(SREG,7);
+	}
+	else
+	{
+		return NotOk;
+	}
+	return Ok;
+}
+
+/*******************************************************************************
+ * Function Name:	UART_Stop
+ *
+ * Description: 	Stop transmitting or Receiving
+ *
+ * Inputs:			NULL
+ *
+ * Outputs:			NULL
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+Status UART_Stop(void)
+{
+	CLEAR_BIT(UART_UCSRB,UART_TXEN);
+	CLEAR_BIT(UART_UCSRB,UART_RXEN);
+	CLEAR_BIT(UART_UCSRB,UART_UDRIE);
+
+	SET_BIT(UART_UCSRA,UART_TXC);
+	SET_BIT(UART_UCSRA,UART_RXC);
+	SET_BIT(UART_UCSRA,UART_UDRE);
+
+	return Ok;
+}
+
+
+

@@ -20,6 +20,7 @@
  *******************************************************************************/
 #include"std_types.h"
 #include"common_macros.h"
+#include <avr/interrupt.h>
 
 /*******************************************************************************
  *                   	 CPU Frequency configurations                          *
@@ -96,6 +97,8 @@ typedef struct{
 	UART_Parity			Parity;
 	UART_StopBits		StopBits;
 }UART_cfg;
+
+extern UART_cfg UART_Config;
 
 
 #endif /* UART_CFG_H_ */
