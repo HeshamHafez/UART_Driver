@@ -21,7 +21,8 @@
 /*******************************************************************************
  *                           Global Variables                                  *
  *******************************************************************************/
-static volatile uint8 g_flag = 0u;
+static volatile uint8 g_flag = LOW;
+static volatile uint8 g_index = LOW;
 
 /*******************************************************************************
  *                       Interrupt Service Routines                            *
@@ -29,8 +30,11 @@ static volatile uint8 g_flag = 0u;
 
 ISR(USART_TXC_vect)
 {
-	UART_UDR = g_flag;
-
+	if(g_flag != LOW)
+	{
+		UART_UDR = g_flag;
+		g_index++ ;
+	}
 }
 /*******************************************************************************
  *                      Functions Definitions                                  *
@@ -73,45 +77,6 @@ Status UART_Init(void)
 	SET_BIT(UART_UCSRC,UART_URSEL);
 	/*set to choose UCSRC*/
 	/*************************************************************************************/
-	if(UART_Config.TxInt  == UART_TxIntDisabled)
-	{
-		CLEAR_BIT(UART_UCSRB,UART_TXCIE);
-	}
-	else if(UART_Config.TxInt  == UART_TxIntEn)
-	{
-		SET_BIT(UART_UCSRB,UART_TXCIE);
-	}
-	else
-	{
-		return NotOk;
-	}
-	/*************************************************************************************/
-	if(UART_Config.RxInt  == UART_RxIntDisabled)
-	{
-		CLEAR_BIT(UART_UCSRB,UART_RXCIE);
-	}
-	else if(UART_Config.RxInt  == UART_RxIntEn)
-	{
-		SET_BIT(UART_UCSRB,UART_RXCIE);
-	}
-	else
-	{
-		return NotOk;
-	}
-	/***************************************************************************************/
-	if(UART_Config.Udr == UART_UdrDisabled)
-	{
-		CLEAR_BIT(UART_UCSRB,UART_UDRIE);
-	}
-	else if(UART_Config.Udr  == UART_UdrEn)
-	{
-		SET_BIT(UART_UCSRB,UART_UDRIE);
-	}
-	else
-	{
-		return NotOk;
-	}
-	/********************************************************************************************/
 	if(UART_Config.DataSize == Bit5)
 	{
 		CLEAR_BIT(UART_UCSRB,UART_UCSZ2);
@@ -194,7 +159,7 @@ Status UART_Init(void)
 Status UART_SendChar(const uint8 a_data)
 {
 
-	if(UART_Config.TxInt  == UART_TxIntDisabled)
+	if(UART_Config.Udr  == UART_UdrDisabled)
 	{
 		/* UDRE flag is set when the Tx buffer (UDR) is empty and ready for
 		 * transmitting a new byte so wait until this flag is set to one */
@@ -207,7 +172,7 @@ Status UART_SendChar(const uint8 a_data)
 		UART_UDR = a_data;
 		return Ok;
 	}
-	else if(UART_Config.TxInt == UART_TxIntEn)
+	else if(UART_Config.Udr == UART_UdrEn)
 	{
 		g_flag = a_data;
 	}
@@ -231,11 +196,28 @@ Status UART_SendChar(const uint8 a_data)
  *******************************************************************************/
 Status UART_Send(const uint8 * a_data_ptr)
 {
-	while(*a_data_ptr != '\0')
+	uint8 index = LOW;
+	if(UART_Config.Udr  == UART_UdrDisabled)
 	{
-		UART_SendChar(*a_data_ptr);
-		a_data_ptr++;
+		while(a_data_ptr[index] != '\0')
+		{
+			UART_SendChar(a_data_ptr[index]);
+			index++;
+		}
 	}
+	else if(UART_Config.Udr == UART_UdrEn)
+	{
+		g_index = LOW;
+		while(a_data_ptr[g_index] != '\0')
+		{
+			UART_SendChar(a_data_ptr[g_index]);
+		}
+	}
+	else
+	{
+		return NotOk;
+	}
+
 	return Ok;
 }
 
@@ -319,10 +301,8 @@ Status UART_Stop(void)
 	CLEAR_BIT(UART_UCSRB,UART_TXEN);
 	CLEAR_BIT(UART_UCSRB,UART_RXEN);
 	CLEAR_BIT(UART_UCSRB,UART_UDRIE);
-
-	SET_BIT(UART_UCSRA,UART_TXC);
-	SET_BIT(UART_UCSRA,UART_RXC);
-	SET_BIT(UART_UCSRA,UART_UDRE);
+	CLEAR_BIT(UART_UCSRB,UART_TXCIE);
+	CLEAR_BIT(UART_UCSRB,UART_RXCIE);
 
 	return Ok;
 }
