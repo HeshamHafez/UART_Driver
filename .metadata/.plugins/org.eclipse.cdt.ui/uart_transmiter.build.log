@@ -1,5 +1,10 @@
-22:05:18 **** Incremental Build of configuration Debug for project uart_transmiter ****
+22:06:36 **** Incremental Build of configuration Debug for project uart_transmiter ****
 make all 
+Building file: ../main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
 Building file: ../uart.c
 Invoking: AVR Compiler
 avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart.d" -MT"uart.o" -c -o "uart.o" "../uart.c"
@@ -24,15 +29,15 @@ AVR Memory Usage
 ----------------
 Device: atmega32
 
-Program:    2766 bytes (8.4% Full)
+Program:    3094 bytes (9.4% Full)
 (.text + .data + .bootloader)
 
-Data:         12 bytes (0.6% Full)
+Data:         14 bytes (0.7% Full)
 (.data + .bss + .noinit)
 
 
 Finished building: sizedummy
  
 
-22:05:18 Build Finished. 0 errors, 0 warnings. (took 689ms)
+22:06:37 Build Finished. 0 errors, 0 warnings. (took 862ms)
 

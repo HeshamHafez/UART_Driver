@@ -109,6 +109,32 @@ extern Status UART_SendChar(const uint8 a_data);
 extern Status UART_Send(const uint8 * a_data_ptr);
 
 /*******************************************************************************
+ * Function Name:	UART_ReceiveChar
+ *
+ * Description: 	Receive a new byte
+ *
+ * Inputs:			None
+ *
+ * Outputs:			received Byte
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+extern Status UART_ReceiveChar(uint8 * a_data_ptr);
+
+/*******************************************************************************
+ * Function Name:	UART_Receive
+ *
+ * Description: 	Receive a new String
+ *
+ * Inputs:			None
+ *
+ * Outputs:			Received String
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+Status UART_Receive(uint8 * a_data_ptr);
+
+/*******************************************************************************
  * Function Name:	UART_Start
  *
  * Description: 	Start transmitting or Receiving

@@ -23,6 +23,7 @@
  *******************************************************************************/
 static volatile uint8 g_flag = LOW;
 static volatile uint8 g_index = LOW;
+static volatile uint8 g_RxFlag = LOW;
 
 /*******************************************************************************
  *                       Interrupt Service Routines                            *
@@ -35,6 +36,12 @@ ISR(USART_TXC_vect)
 		UART_UDR = g_flag;
 		g_index++ ;
 	}
+}
+
+
+ISR(USART_RXC_vect)
+{
+	g_RxFlag = 1;
 }
 /*******************************************************************************
  *                      Functions Definitions                                  *
@@ -184,6 +191,45 @@ Status UART_SendChar(const uint8 a_data)
 }
 
 /*******************************************************************************
+ * Function Name:	UART_ReceiveChar
+ *
+ * Description: 	Receive a new byte
+ *
+ * Inputs:			None
+ *
+ * Outputs:			received Byte
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+Status UART_ReceiveChar(uint8 * a_data_ptr)
+{
+	if (UART_Config.RxInt == UART_RxIntDisabled)
+	{
+		while(IS_BIT_CLEAR(UART_UCSRA,UART_RXC)){}
+
+		*a_data_ptr = UDR;
+	}
+	else if(UART_Config.RxInt == UART_RxIntEn)
+	{
+		if (g_RxFlag == 1)
+		{
+			*a_data_ptr = UDR;
+			g_RxFlag = 0;
+		}
+		else
+		{
+			*a_data_ptr = LOW;
+		}
+	}
+	else
+	{
+		return NotOk;
+	}
+	return Ok;
+}
+
+
+/*******************************************************************************
  * Function Name:	UART_Send
  *
  * Description: 	transmit a new String
@@ -218,6 +264,52 @@ Status UART_Send(const uint8 * a_data_ptr)
 		return NotOk;
 	}
 
+	return Ok;
+}
+
+/*******************************************************************************
+ * Function Name:	UART_Receive
+ *
+ * Description: 	Receive a new String
+ *
+ * Inputs:			None
+ *
+ * Outputs:			Received String
+ *
+ * Return:			Status to check function execution
+ *******************************************************************************/
+Status UART_Receive(uint8 * a_data_ptr)
+{
+	static uint8 loop_index = 0;
+
+	if (UART_Config.RxInt == UART_RxIntDisabled)
+	{
+		while(UART_UDR != '#'){
+			UART_ReceiveChar(&a_data_ptr[loop_index]);
+			loop_index++;
+		}
+		loop_index=0;
+	}
+	else if(UART_Config.RxInt == UART_RxIntEn)
+	{
+		/* ISR will be executed */
+		if(UART_UDR != '#'){
+			UART_ReceiveChar(&a_data_ptr[loop_index]);
+			/* Garbage value detection */
+			if (a_data_ptr[loop_index] != LOW)
+			{
+				loop_index++;
+			}
+		}
+		else
+		{
+			loop_index=0;
+		}
+	}
+	else
+	{
+		return NotOk;
+	}
 	return Ok;
 }
 
