@@ -123,6 +123,8 @@
             <definedSymbol symbol="__AVR_HAVE_JMP_CALL__=1"/>
             <definedSymbol symbol="__AVR_2_BYTE_PC__=1"/>
             <definedSymbol symbol="F_CPU=1000000UL"/>
+            <definedSymbol symbol="F_CPU=8000000UL"/>
+            <definedSymbol symbol="__AVR_ATmega32__=1"/>
         </collector>
     </instance>
     <instance id="de.innot.avreclipse.configuration.app.release.283130925;de.innot.avreclipse.configuration.app.release.283130925.;de.innot.avreclipse.tool.compiler.winavr.app.release.319300104;de.innot.avreclipse.compiler.winavr.input.1584444967">

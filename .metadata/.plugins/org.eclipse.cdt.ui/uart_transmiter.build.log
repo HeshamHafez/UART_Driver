@@ -1,24 +1,11 @@
-22:09:28 **** Build of configuration Debug for project uart_transmiter ****
+22:39:41 **** Incremental Build of configuration Debug for project uart_transmiter ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
 avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+In file included from ../main.c:16:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
 Finished building: ../main.c
- 
-Building file: ../reg_file.c
-Invoking: AVR Compiler
-avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"reg_file.d" -MT"reg_file.o" -c -o "reg_file.o" "../reg_file.c"
-Finished building: ../reg_file.c
- 
-Building file: ../uart.c
-Invoking: AVR Compiler
-avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart.d" -MT"uart.o" -c -o "uart.o" "../uart.c"
-Finished building: ../uart.c
- 
-Building file: ../uart_cfg.c
-Invoking: AVR Compiler
-avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart_cfg.d" -MT"uart_cfg.o" -c -o "uart_cfg.o" "../uart_cfg.c"
-Finished building: ../uart_cfg.c
  
 Building target: uart_transmiter.elf
 Invoking: AVR C Linker
@@ -39,15 +26,15 @@ AVR Memory Usage
 ----------------
 Device: atmega32
 
-Program:    3056 bytes (9.3% Full)
+Program:    6438 bytes (19.6% Full)
 (.text + .data + .bootloader)
 
-Data:         14 bytes (0.7% Full)
+Data:         22 bytes (1.1% Full)
 (.data + .bss + .noinit)
 
 
 Finished building: sizedummy
  
 
-22:09:29 Build Finished. 0 errors, 0 warnings. (took 1s.45ms)
+22:39:42 Build Finished. 0 errors, 1 warnings. (took 793ms)
 

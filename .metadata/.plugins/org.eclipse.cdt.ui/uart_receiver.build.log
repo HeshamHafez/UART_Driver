@@ -1,0 +1,53 @@
+22:10:27 **** Build of configuration Debug for project uart_receiver ****
+make all 
+Building file: ../main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building file: ../reg_file.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"reg_file.d" -MT"reg_file.o" -c -o "reg_file.o" "../reg_file.c"
+Finished building: ../reg_file.c
+ 
+Building file: ../uart.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart.d" -MT"uart.o" -c -o "uart.o" "../uart.c"
+Finished building: ../uart.c
+ 
+Building file: ../uart_cfg.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart_cfg.d" -MT"uart_cfg.o" -c -o "uart_cfg.o" "../uart_cfg.c"
+Finished building: ../uart_cfg.c
+ 
+Building target: uart_receiver.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,uart_receiver.map -mmcu=atmega32 -o "uart_receiver.elf"  ./main.o ./reg_file.o ./uart.o ./uart_cfg.o   
+Finished building target: uart_receiver.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S uart_receiver.elf  >"uart_receiver.lss"
+Finished building: uart_receiver.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex uart_receiver.elf  "uart_receiver.hex"
+Finished building: uart_receiver.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 uart_receiver.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    3056 bytes (9.3% Full)
+(.text + .data + .bootloader)
+
+Data:         14 bytes (0.7% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+22:10:28 Build Finished. 0 errors, 0 warnings. (took 1s.98ms)
+
