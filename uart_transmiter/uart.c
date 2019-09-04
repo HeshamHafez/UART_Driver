@@ -29,7 +29,7 @@ static volatile uint8 g_RxFlag = LOW;
  *                       Interrupt Service Routines                            *
  *******************************************************************************/
 
-ISR(USART_TXC_vect)
+ISR(USART_UDRE_vect)
 {
 	if(g_flag != LOW)
 	{
@@ -177,7 +177,6 @@ Status UART_SendChar(const uint8 a_data)
 		 * the UDR register is not empty now */
 
 		UART_UDR = a_data;
-		return Ok;
 	}
 	else if(UART_Config.Udr == UART_UdrEn)
 	{
@@ -328,12 +327,10 @@ Status UART_Start(void)
 {
 	SET_BIT(UART_UCSRB,UART_TXEN);
 	SET_BIT(UART_UCSRB,UART_RXEN);
-	SET_BIT(UART_UCSRB,UART_UDRIE);
 
 	if(UART_Config.TxInt  == UART_TxIntDisabled)
 	{
 		CLEAR_BIT(UART_UCSRB,UART_TXCIE);
-		CLEAR_BIT(SREG,7);
 	}
 	else if(UART_Config.TxInt  == UART_TxIntEn)
 	{
@@ -348,7 +345,6 @@ Status UART_Start(void)
 	if(UART_Config.Udr == UART_UdrDisabled)
 	{
 		CLEAR_BIT(UART_UCSRB,UART_UDRIE);
-		CLEAR_BIT(SREG,7);
 	}
 	else if(UART_Config.Udr  == UART_UdrEn)
 	{
@@ -363,7 +359,6 @@ Status UART_Start(void)
 	if(UART_Config.RxInt  == UART_RxIntDisabled)
 	{
 		CLEAR_BIT(UART_UCSRB,UART_RXCIE);
-		CLEAR_BIT(SREG,7);
 	}
 	else if(UART_Config.RxInt  == UART_RxIntEn)
 	{
