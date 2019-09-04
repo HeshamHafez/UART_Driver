@@ -13,11 +13,11 @@ void DIO_WritePin(uint8 PinNum,uint8 PinValue)
 	{
 		if(PinValue == 0)
 		{
-			CLEAR_BIT(PORTA,PinNum);
+			CLEAR_BIT(DIO_PORTA,PinNum);
 		}
 		else
 		{
-			SET_BIT(PORTA,PinNum);
+			SET_BIT(DIO_PORTA,PinNum);
 		}
 	}
 	else if((PinNum >= PIN8) && (PinNum <= PIN15))
@@ -25,11 +25,11 @@ void DIO_WritePin(uint8 PinNum,uint8 PinValue)
 		PinNum = PinNum - 8;
 		if(PinValue == 0)
 		{
-			CLEAR_BIT(PORTB,PinNum);
+			CLEAR_BIT(DIO_PORTB,PinNum);
 		}
 		else
 		{
-			SET_BIT(PORTB,PinNum);
+			SET_BIT(DIO_PORTB,PinNum);
 		}
 
 	}
@@ -38,11 +38,11 @@ void DIO_WritePin(uint8 PinNum,uint8 PinValue)
 		PinNum = PinNum - 16;
 		if(PinValue == 0)
 		{
-			CLEAR_BIT(PORTC,PinNum);
+			CLEAR_BIT(DIO_PORTC,PinNum);
 		}
 		else
 		{
-			SET_BIT(PORTC,PinNum);
+			SET_BIT(DIO_PORTC,PinNum);
 		}
 
 	}
@@ -51,11 +51,11 @@ void DIO_WritePin(uint8 PinNum,uint8 PinValue)
 		PinNum = PinNum - 24;
 		if(PinValue == 0)
 		{
-			CLEAR_BIT(PORTD,PinNum);
+			CLEAR_BIT(DIO_PORTD,PinNum);
 		}
 		else
 		{
-			SET_BIT(PORTD,PinNum);
+			SET_BIT(DIO_PORTD,PinNum);
 		}
 
 	}
@@ -66,25 +66,25 @@ uint8 DIO_ReadPin(uint8 PinNum)
 	uint8 value;
 	if((PinNum >= PIN0) && (PinNum <= PIN7))
 	{
-		value = IS_BIT_SET(PINA,PinNum);
+		value = IS_BIT_SET(DIO_PINA,PinNum);
 	}
 
 	else if((PinNum >= PIN8) && (PinNum <= PIN15))
 	{
 		PinNum = PinNum -8;
-		value = IS_BIT_SET(PINB,PinNum);
+		value = IS_BIT_SET(DIO_PINB,PinNum);
 
 	}
 	else if((PinNum >= PIN16) && (PinNum <= PIN23))
 	{
 		PinNum = PinNum -16;
-		value = IS_BIT_SET(PINC,PinNum);
+		value = IS_BIT_SET(DIO_PINC,PinNum);
 
 	}
 	else if((PinNum >= PIN24) && (PinNum <= PIN31))
 	{
 		PinNum = PinNum -24;
-		value = IS_BIT_SET(PIND,PinNum);
+		value = IS_BIT_SET(DIO_PIND,PinNum);
 	}
 
 	if(value != 0)
@@ -100,11 +100,11 @@ void DIO_SetPinDirection(uint8 PinNum,uint8 PinDirection)
 	{
 		if(PinDirection == 0)
 		{
-			CLEAR_BIT(DDRA,PinNum);
+			CLEAR_BIT(DIO_DDRA,PinNum);
 		}
 		else
 		{
-			SET_BIT(DDRA,PinNum);
+			SET_BIT(DIO_DDRA,PinNum);
 		}
 	}
 	if((PinNum >= PIN8) && (PinNum <= PIN15))
@@ -112,11 +112,11 @@ void DIO_SetPinDirection(uint8 PinNum,uint8 PinDirection)
 		PinNum = PinNum -8;
 		if(PinDirection == 0)
 		{
-			CLEAR_BIT(DDRB,PinNum);
+			CLEAR_BIT(DIO_DDRB,PinNum);
 		}
 		else
 		{
-			SET_BIT(DDRB,PinNum);
+			SET_BIT(DIO_DDRB,PinNum);
 		}
 	}
 	if((PinNum >= PIN16) && (PinNum <= PIN23))
@@ -124,11 +124,11 @@ void DIO_SetPinDirection(uint8 PinNum,uint8 PinDirection)
 		PinNum = PinNum - 16;
 		if(PinDirection == 0)
 		{
-			CLEAR_BIT(DDRC,PinNum);
+			CLEAR_BIT(DIO_DDRC,PinNum);
 		}
 		else
 		{
-			SET_BIT(DDRC,PinNum);
+			SET_BIT(DIO_DDRC,PinNum);
 		}
 	}
 	if((PinNum >= PIN24) && (PinNum <= PIN31))
@@ -136,11 +136,11 @@ void DIO_SetPinDirection(uint8 PinNum,uint8 PinDirection)
 		PinNum = PinNum - 24;
 		if(PinDirection == 0)
 		{
-			CLEAR_BIT(DDRD,PinNum);
+			CLEAR_BIT(DIO_DDRD,PinNum);
 		}
 		else
 		{
-			SET_BIT(DDRD,PinNum);
+			SET_BIT(DIO_DDRD,PinNum);
 		}
 	}
 

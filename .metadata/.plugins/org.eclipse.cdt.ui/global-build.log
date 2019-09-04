@@ -1,4 +1,4 @@
-22:39:41 **** Incremental Build of configuration Debug for project uart_transmiter ****
+22:51:54 **** Incremental Build of configuration Debug for project uart_receiver ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
@@ -7,29 +7,29 @@ In file included from ../main.c:16:
 c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
 Finished building: ../main.c
  
-Building target: uart_transmiter.elf
+Building target: uart_receiver.elf
 Invoking: AVR C Linker
-avr-gcc -Wl,-Map,uart_transmiter.map -mmcu=atmega32 -o "uart_transmiter.elf"  ./main.o ./reg_file.o ./uart.o ./uart_cfg.o   
-Finished building target: uart_transmiter.elf
+avr-gcc -Wl,-Map,uart_receiver.map -mmcu=atmega32 -o "uart_receiver.elf"  ./main.o ./reg_file.o ./uart.o ./uart_cfg.o   
+Finished building target: uart_receiver.elf
  
 Invoking: AVR Create Extended Listing
-avr-objdump -h -S uart_transmiter.elf  >"uart_transmiter.lss"
-Finished building: uart_transmiter.lss
+avr-objdump -h -S uart_receiver.elf  >"uart_receiver.lss"
+Finished building: uart_receiver.lss
  
 Create Flash image (ihex format)
-avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex uart_transmiter.elf  "uart_transmiter.hex"
-Finished building: uart_transmiter.hex
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex uart_receiver.elf  "uart_receiver.hex"
+Finished building: uart_receiver.hex
  
 Invoking: Print Size
-avr-size --format=avr --mcu=atmega32 uart_transmiter.elf
+avr-size --format=avr --mcu=atmega32 uart_receiver.elf
 AVR Memory Usage
 ----------------
 Device: atmega32
 
-Program:    6438 bytes (19.6% Full)
+Program:    3170 bytes (9.7% Full)
 (.text + .data + .bootloader)
 
-Data:         22 bytes (1.1% Full)
+Data:         14 bytes (0.7% Full)
 (.data + .bss + .noinit)
 
 

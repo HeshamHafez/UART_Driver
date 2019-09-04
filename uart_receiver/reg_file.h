@@ -11,21 +11,21 @@
 #include "common_macros.h"
 #include "std_types.h"
 
-#define PORTA (*(volatile uint8 *)0x003B)
-#define DDRA  (*(volatile uint8 *)0x003A)
-#define PINA  (*(volatile const uint8 *)0x0039)
+#define DIO_PORTA (*(volatile uint8 *)0x003B)
+#define DIO_DDRA  (*(volatile uint8 *)0x003A)
+#define DIO_PINA  (*(volatile const uint8 *)0x0039)
 
-#define PORTB (*(volatile uint8 *)0x0038)
-#define DDRB  (*(volatile uint8 *)0x0037)
-#define PINB  (*(volatile const uint8 *)0x0036)
+#define DIO_PORTB (*(volatile uint8 *)0x0038)
+#define DIO_DDRB  (*(volatile uint8 *)0x0037)
+#define DIO_PINB  (*(volatile const uint8 *)0x0036)
 
-#define PORTC (*(volatile uint8 *)0x0035)
-#define DDRC  (*(volatile uint8 *)0x0034)
-#define PINC  (*(volatile const uint8 *)0x0033)
+#define DIO_PORTC (*(volatile uint8 *)0x0035)
+#define DIO_DDRC  (*(volatile uint8 *)0x0034)
+#define DIO_PINC  (*(volatile const uint8 *)0x0033)
 
-#define PORTD (*(volatile uint8 *)0x0032)
-#define DDRD  (*(volatile uint8 *)0x0031)
-#define PIND  (*(volatile const uint8 *)0x0030)
+#define DIO_PORTD (*(volatile uint8 *)0x0032)
+#define DIO_DDRD  (*(volatile uint8 *)0x0031)
+#define DIO_PIND  (*(volatile const uint8 *)0x0030)
 
 #define PIN0 0
 #define PIN1 1
