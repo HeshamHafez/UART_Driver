@@ -1,14 +1,24 @@
-22:07:51 **** Incremental Build of configuration Debug for project uart_transmiter ****
+22:09:28 **** Build of configuration Debug for project uart_transmiter ****
 make all 
 Building file: ../main.c
 Invoking: AVR Compiler
 avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
 Finished building: ../main.c
  
+Building file: ../reg_file.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"reg_file.d" -MT"reg_file.o" -c -o "reg_file.o" "../reg_file.c"
+Finished building: ../reg_file.c
+ 
 Building file: ../uart.c
 Invoking: AVR Compiler
 avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart.d" -MT"uart.o" -c -o "uart.o" "../uart.c"
 Finished building: ../uart.c
+ 
+Building file: ../uart_cfg.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart_cfg.d" -MT"uart_cfg.o" -c -o "uart_cfg.o" "../uart_cfg.c"
+Finished building: ../uart_cfg.c
  
 Building target: uart_transmiter.elf
 Invoking: AVR C Linker
@@ -39,5 +49,5 @@ Data:         14 bytes (0.7% Full)
 Finished building: sizedummy
  
 
-22:07:52 Build Finished. 0 errors, 0 warnings. (took 782ms)
+22:09:29 Build Finished. 0 errors, 0 warnings. (took 1s.45ms)
 

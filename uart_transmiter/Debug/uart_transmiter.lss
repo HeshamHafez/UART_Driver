@@ -856,7 +856,7 @@ ISR(USART_RXC_vect)
  554:	cf 93       	push	r28
  556:	cd b7       	in	r28, 0x3d	; 61
  558:	de b7       	in	r29, 0x3e	; 62
-	g_RxFlag = 1;
+	g_RxFlag = HIGH;
  55a:	81 e0       	ldi	r24, 0x01	; 1
  55c:	80 93 6c 00 	sts	0x006C, r24
 }
@@ -870,10 +870,10 @@ ISR(USART_RXC_vect)
  56e:	18 95       	reti
 
 00000570 <UART_Init>:
- * Outputs:			NULL
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_Init(void)
 {
  570:	df 93       	push	r29
@@ -882,7 +882,7 @@ Status UART_Init(void)
  576:	0f 92       	push	r0
  578:	cd b7       	in	r28, 0x3d	; 61
  57a:	de b7       	in	r29, 0x3e	; 62
-	uint16 UART_UBRR = 0u;
+	uint16 UART_UBRR = LOW;
  57c:	1a 82       	std	Y+2, r1	; 0x02
  57e:	19 82       	std	Y+1, r1	; 0x01
 	if(UART_Config.DoubleSpeed == UART_DoubleSpeedDisable)
@@ -898,7 +898,7 @@ Status UART_Init(void)
  590:	80 81       	ld	r24, Z
  592:	8d 7f       	andi	r24, 0xFD	; 253
  594:	8c 93       	st	X, r24
-		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 16UL))) - 1);
+		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 16UL))) - 1u);
  596:	80 91 60 00 	lds	r24, 0x0060
  59a:	90 91 61 00 	lds	r25, 0x0061
  59e:	cc 01       	movw	r24, r24
@@ -949,7 +949,7 @@ Status UART_Init(void)
  5f4:	80 81       	ld	r24, Z
  5f6:	82 60       	ori	r24, 0x02	; 2
  5f8:	8c 93       	st	X, r24
-		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 8UL))) - 1);
+		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 8UL))) - 1u);
  5fa:	80 91 60 00 	lds	r24, 0x0060
  5fe:	90 91 61 00 	lds	r25, 0x0061
  602:	cc 01       	movw	r24, r24
@@ -1004,7 +1004,7 @@ Status UART_Init(void)
  654:	f0 e0       	ldi	r31, 0x00	; 0
  656:	89 81       	ldd	r24, Y+1	; 0x01
  658:	80 83       	st	Z, r24
-	UART_UBRRH = (uint8)(UART_UBRR >> 8);
+	UART_UBRRH = (uint8)(UART_UBRR >> 8u);
  65a:	e0 e4       	ldi	r30, 0x40	; 64
  65c:	f0 e0       	ldi	r31, 0x00	; 0
  65e:	89 81       	ldd	r24, Y+1	; 0x01
@@ -1304,10 +1304,10 @@ Status UART_Init(void)
  832:	08 95       	ret
 
 00000834 <UART_SendChar>:
- * Outputs:			NULL
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_SendChar(const uint8 a_data)
 {
  834:	df 93       	push	r29
@@ -1374,10 +1374,10 @@ Status UART_SendChar(const uint8 a_data)
  886:	08 95       	ret
 
 00000888 <UART_ReceiveChar>:
- * Outputs:			received Byte
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_ReceiveChar(uint8 * a_data_ptr)
 {
  888:	df 93       	push	r29
@@ -1426,7 +1426,7 @@ Status UART_ReceiveChar(uint8 * a_data_ptr)
  8ce:	e9 81       	ldd	r30, Y+1	; 0x01
  8d0:	fa 81       	ldd	r31, Y+2	; 0x02
  8d2:	80 83       	st	Z, r24
-			g_RxFlag = 0;
+			g_RxFlag = LOW;
  8d4:	10 92 6c 00 	sts	0x006C, r1
  8d8:	06 c0       	rjmp	.+12     	; 0x8e6 <UART_ReceiveChar+0x5e>
 		}
@@ -1458,10 +1458,10 @@ Status UART_ReceiveChar(uint8 * a_data_ptr)
  8f6:	08 95       	ret
 
 000008f8 <UART_Send>:
- * Outputs:			NULL
- *
- * Return:			Status to check function execution
+ * Notes:			you should add # after your string to transmit it
+ * 					your string will not be transmitted if you don't add #.
  *******************************************************************************/
+
 Status UART_Send(const uint8 * a_data_ptr)
 {
  8f8:	df 93       	push	r29
@@ -1583,10 +1583,10 @@ Status UART_Send(const uint8 * a_data_ptr)
  99e:	08 95       	ret
 
 000009a0 <UART_Receive>:
- * Outputs:			Received String
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_Receive(uint8 * a_data_ptr)
 {
  9a0:	df 93       	push	r29
@@ -1705,10 +1705,10 @@ Status UART_Receive(uint8 * a_data_ptr)
  a4c:	08 95       	ret
 
 00000a4e <UART_Start>:
- * Outputs:		NULL
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_Start(void)
 {
  a4e:	df 93       	push	r29
@@ -1878,10 +1878,10 @@ Status UART_Start(void)
  b46:	08 95       	ret
 
 00000b48 <UART_Stop>:
- * Outputs:			NULL
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_Stop(void)
 {
  b48:	df 93       	push	r29

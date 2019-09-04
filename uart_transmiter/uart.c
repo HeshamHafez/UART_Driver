@@ -21,8 +21,8 @@
 /*******************************************************************************
  *                           Global Variables                                  *
  *******************************************************************************/
-static volatile uint8 g_flag = LOW;
-static volatile uint8 g_index = LOW;
+static volatile uint8 g_flag   = LOW;
+static volatile uint8 g_index  = LOW;
 static volatile uint8 g_RxFlag = LOW;
 
 /*******************************************************************************
@@ -41,7 +41,7 @@ ISR(USART_UDRE_vect)
 
 ISR(USART_RXC_vect)
 {
-	g_RxFlag = 1;
+	g_RxFlag = HIGH;
 }
 /*******************************************************************************
  *                      Functions Definitions                                  *
@@ -59,18 +59,19 @@ ISR(USART_RXC_vect)
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_Init(void)
 {
-	uint16 UART_UBRR = 0u;
+	uint16 UART_UBRR = LOW;
 	if(UART_Config.DoubleSpeed == UART_DoubleSpeedDisable)
 	{
 		CLEAR_BIT(UART_UCSRA,UART_U2X);
-		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 16UL))) - 1);
+		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 16UL))) - 1u);
 	}
 	else if(UART_Config.DoubleSpeed == UART_DoubleSpeedEn)
 	{
 		SET_BIT(UART_UCSRA,UART_U2X);
-		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 8UL))) - 1);
+		UART_UBRR = (((F_CPU / (UART_Config.baud_rate * 8UL))) - 1u);
 	}
 	else
 	{
@@ -80,7 +81,7 @@ Status UART_Init(void)
 	/*clear to choose UBRRH*/
 	CLEAR_BIT(UART_UCSRC,UART_URSEL);
 	UART_UBRRL = (uint8)UART_UBRR;
-	UART_UBRRH = (uint8)(UART_UBRR >> 8);
+	UART_UBRRH = (uint8)(UART_UBRR >> 8u);
 	SET_BIT(UART_UCSRC,UART_URSEL);
 	/*set to choose UCSRC*/
 	/*************************************************************************************/
@@ -163,6 +164,7 @@ Status UART_Init(void)
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_SendChar(const uint8 a_data)
 {
 
@@ -200,6 +202,7 @@ Status UART_SendChar(const uint8 a_data)
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_ReceiveChar(uint8 * a_data_ptr)
 {
 	if (UART_Config.RxInt == UART_RxIntDisabled)
@@ -213,7 +216,7 @@ Status UART_ReceiveChar(uint8 * a_data_ptr)
 		if (g_RxFlag == 1)
 		{
 			*a_data_ptr = UDR;
-			g_RxFlag = 0;
+			g_RxFlag = LOW;
 		}
 		else
 		{
@@ -238,7 +241,11 @@ Status UART_ReceiveChar(uint8 * a_data_ptr)
  * Outputs:			NULL
  *
  * Return:			Status to check function execution
+ *
+ * Notes:			you should add # after your string to transmit it
+ * 					your string will not be transmitted if you don't add #.
  *******************************************************************************/
+
 Status UART_Send(const uint8 * a_data_ptr)
 {
 	uint8 index = LOW;
@@ -277,6 +284,7 @@ Status UART_Send(const uint8 * a_data_ptr)
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_Receive(uint8 * a_data_ptr)
 {
 	static uint8 loop_index = 0;
@@ -323,6 +331,7 @@ Status UART_Receive(uint8 * a_data_ptr)
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_Start(void)
 {
 	SET_BIT(UART_UCSRB,UART_TXEN);
@@ -383,6 +392,7 @@ Status UART_Start(void)
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 Status UART_Stop(void)
 {
 	CLEAR_BIT(UART_UCSRB,UART_TXEN);

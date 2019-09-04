@@ -80,6 +80,7 @@
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 extern Status UART_Init(void);
 
 /*******************************************************************************
@@ -93,6 +94,7 @@ extern Status UART_Init(void);
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 extern Status UART_SendChar(const uint8 a_data);
 
 /*******************************************************************************
@@ -105,7 +107,11 @@ extern Status UART_SendChar(const uint8 a_data);
  * Outputs:			NULL
  *
  * Return:			Status to check function execution
+ *
+ * Notes:			you should add # after your string to transmit it
+ * 					your string will not be transmitted if you don't add #.
  *******************************************************************************/
+
 extern Status UART_Send(const uint8 * a_data_ptr);
 
 /*******************************************************************************
@@ -119,6 +125,7 @@ extern Status UART_Send(const uint8 * a_data_ptr);
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 extern Status UART_ReceiveChar(uint8 * a_data_ptr);
 
 /*******************************************************************************
@@ -132,7 +139,8 @@ extern Status UART_ReceiveChar(uint8 * a_data_ptr);
  *
  * Return:			Status to check function execution
  *******************************************************************************/
-Status UART_Receive(uint8 * a_data_ptr);
+
+extern Status UART_Receive(uint8 * a_data_ptr);
 
 /*******************************************************************************
  * Function Name:	UART_Start
@@ -145,6 +153,7 @@ Status UART_Receive(uint8 * a_data_ptr);
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 extern Status UART_Start(void);
 
 /*******************************************************************************
@@ -158,6 +167,7 @@ extern Status UART_Start(void);
  *
  * Return:			Status to check function execution
  *******************************************************************************/
+
 extern Status UART_Stop(void);
 
 #endif /* UART_H_ */
