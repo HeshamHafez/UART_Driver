@@ -1,0 +1,50 @@
+22:01:51 **** Incremental Build of configuration Debug for project uart_transmiter ****
+make all 
+Building file: ../main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building file: ../reg_file.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"reg_file.d" -MT"reg_file.o" -c -o "reg_file.o" "../reg_file.c"
+Finished building: ../reg_file.c
+ 
+Building file: ../uart.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart.d" -MT"uart.o" -c -o "uart.o" "../uart.c"
+Finished building: ../uart.c
+ 
+Building file: ../uart_cfg.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"uart_cfg.d" -MT"uart_cfg.o" -c -o "uart_cfg.o" "../uart_cfg.c"
+Finished building: ../uart_cfg.c
+ 
+Building target: uart_transmiter.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,uart_transmiter.map -mmcu=atmega32 -o "uart_transmiter.elf"  ./main.o ./reg_file.o ./uart.o ./uart_cfg.o   
+Finished building target: uart_transmiter.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S uart_transmiter.elf  >"uart_transmiter.lss"
+Finished building: uart_transmiter.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex uart_transmiter.elf  "uart_transmiter.hex"
+Finished building: uart_transmiter.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 uart_transmiter.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    2322 bytes (7.1% Full)
+(.text + .data + .bootloader)
+
+Data:         18 bytes (0.9% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
